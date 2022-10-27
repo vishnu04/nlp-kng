@@ -58,9 +58,13 @@ def scrape():
             try:
                 text = scrapper.scrape_text(web_url)
                 text_df,text = cleaner.clean_data(text)
+                print(f'length of text scraped:{len(text)}')
                 if len(text) > 1:
-                    print(f'length of text scraped:{len(text)}')
                     return render_template('home.html', weburl = web_url, cleantext = text, display_svo = False)
+                else:
+                    flash('Unable to scrape text from the URL. Please copy and paste the text from the website. !', category='warning')
+                    text = 'Unable to scrape text from the URL. Please copy and paste the text from the website entered in URL.'
+                    return render_template('home.html', weburl = web_url, cleantext = text, display_svo = False)    
             except:
                 flash('URL entered cannot be scraped !. Please enter correct URL. e.g: https://textacy.readthedocs.io/', category='error')
                 return render_template('home.html', weburl = web_url)
